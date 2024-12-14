@@ -21,6 +21,10 @@ public class WordCount
     env.getConfig().setGlobalJobParameters(params);
     
     DataSet<String> text = env.readTextFile(params.get("input"));
+
+
+
+
     
     DataSet<String> filtered = text.filter(new FilterFunction<String>()
     
@@ -30,9 +34,20 @@ public class WordCount
         return value.startsWith("N");
       }
     });
+
+
+
+
+
+
     DataSet<Tuple2<String, Integer>> tokenized = filtered.map(new Tokenizer());
+
+
+
     
     DataSet<Tuple2<String, Integer>> counts = tokenized.groupBy(new int[] { 0 }).sum(1);
+
+
     if (params.has("output"))
     {
       counts.writeAsCsv(params.get("output"), "\n", " ");
@@ -40,9 +55,10 @@ public class WordCount
       env.execute("WordCount Example");
     }
   }
+
+
   
-  public static final class Tokenizer
-    implements MapFunction<String, Tuple2<String, Integer>>
+  public static final class Tokenizer implements MapFunction<String, Tuple2<String, Integer>>
   {
     public Tuple2<String, Integer> map(String value)
     {
